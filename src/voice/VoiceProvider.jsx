@@ -10,7 +10,7 @@ export function VoiceProvider({children}){
 
  useEffect(()=>{
   if(!("speechSynthesis" in window))return;
-  const choose=()=>{const voices=window.speechSynthesis.getVoices();voiceRef.current=voices.find(v=>/Aria|Jenny|Samantha|Google UK English Female/i.test(v.name))||voices.find(v=>v.lang?.startsWith("en"))||voices[0]};
+  const choose=()=>{const voices=window.speechSynthesis.getVoices();voiceRef.current=voices.find(v=>/Natural|Neural|Aria|Jenny|Samantha|Google UK English Female/i.test(v.name))||voices.find(v=>v.lang?.startsWith("en"))||voices[0]};
   choose();window.speechSynthesis.addEventListener("voiceschanged",choose);
   return()=>window.speechSynthesis.removeEventListener("voiceschanged",choose);
  },[]);
@@ -20,7 +20,7 @@ export function VoiceProvider({children}){
   const item=queueRef.current.shift();if(!item)return;
   activeRef.current=true;
   const speech=new SpeechSynthesisUtterance(item.message);
-  speech.voice=voiceRef.current;speech.lang="en-US";speech.rate=item.priority==="critical"?.88:.94;speech.pitch=.96;speech.volume=1;
+  speech.voice=voiceRef.current;speech.lang="en-US";speech.rate=item.priority==="critical"?.9:.97;speech.pitch=1.02;speech.volume=1;
   speech.onstart=()=>{setSpeaking(true);setLastMessage(item.message)};
   const finish=()=>{activeRef.current=false;setSpeaking(false);setTimeout(pump,250)};
   speech.onend=finish;speech.onerror=finish;
